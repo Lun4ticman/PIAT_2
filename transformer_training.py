@@ -1,4 +1,5 @@
 from transformer import Transformer
+from pytorch_transformer import Pytorch_Transformer
 from dset import get_loaders, CorpusDataset
 import torch
 from train import train
@@ -14,6 +15,7 @@ dset = CorpusDataset(max_seq_length, 'corpus/corpus_2.txt')
 src_vocab_size = len(dset.corpus.dictionary)
 tgt_vocab_size = len(dset.corpus.dictionary)
 d_model = 128
+embedding_size = 128
 num_heads = 4
 num_layers = 5
 d_ff = 128
@@ -29,15 +31,15 @@ try:
 except RuntimeError:
     print(f'Błąd z batch {batch}')
 #%%
-transformer = Transformer(src_vocab_size, tgt_vocab_size, d_model, num_heads, num_layers, d_ff, max_seq_length, dropout)
+# transformer = Transformer(src_vocab_size, tgt_vocab_size, d_model, num_heads, num_layers, d_ff, max_seq_length, dropout)
+transformer = Pytorch_Transformer(src_vocab_size, d_model, embedding_size, num_layers, num_heads, d_ff, dropout)
 #%%
 criterion = torch.nn.CrossEntropyLoss(ignore_index=0)
 # optimizer = torch.optim.Adam(transformer.parameters(), lr=0.0001, betas=(0.9, 0.98), eps=1e-9)
 #%%
-state_dict = torch.load('best_2.pt')
-transformer.load_state_dict(state_dict)
+# state_dict = torch.load('best_2.pt')
+# transformer.load_state_dict(state_dict)
 
-# batch_size = 32
 eval_batch_size = 16
 
 device = 'cuda'
@@ -57,4 +59,4 @@ params = {
 
 train(**params)
 
-torch.save(transformer.state_dict(), 'recent.pt')
+torch.save(transformer.state_dict(), 'pytorch_transformer_recent.pt')

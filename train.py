@@ -109,19 +109,19 @@ def train(epochs=None, model=None, clip=None, lr=None, log_interval=None, corpus
                         p.data.add_(p.grad, alpha=-lr)
 
                 if epoch % 2 == 0:
-                    torch.save(model.state_dict(), 'checkpoint_2.pt')
+                    torch.save(model.state_dict(), 'pytorch_transformer_checkpoint.pt')
 
             except RuntimeError:
                 print(f'Błąd z {batch}')
                 print('Pomijane...')
                 continue
 
-        torch.save(best_model, "best_2.pt")
+        torch.save(best_model, "pytorch_transformer_checkpoint_best.pt")
 
     except KeyboardInterrupt:
         print('\n')
         print('Finishing early by user')
-        torch.save(model.state_dict(), 'checkpoint_2.pt')
+        torch.save(model.state_dict(), 'pytorch_transformer_checkpoint.pt')
 
 
 def train_lstm(epochs=None, model=None, clip=None, lr=None, log_interval=None, corpus=None, train_data=None, test_data = None,

@@ -35,7 +35,7 @@ def generate(words: [str], model: Transformer, dictionary: Dictionary) -> str:
     return output_word
 
 
-def generate_story(prompt: str, model: Transformer, dictionary: Dictionary, story_length: int) -> str:
+def generate_story(prompt: str, model, dictionary: Dictionary, story_length: int, device='cuda') -> str:
 
     counter = 0
     words = prompt.split()
@@ -52,8 +52,8 @@ def generate_story(prompt: str, model: Transformer, dictionary: Dictionary, stor
 
 
     for i in range(0, story_length):
-        x = torch.tensor([[dictionary.word2idx[w] for w in words[i:]]]).to(model.device)
-        y_pred = model(x, x).to(model.device)
+        x = torch.tensor([[dictionary.word2idx[w] for w in words[i:]]]).to(device)
+        y_pred = model(x, x).to(device)
 
         last_word_logits = y_pred[0][-1]
         p = torch.nn.functional.softmax(last_word_logits, dim=0).detach().cpu().numpy()

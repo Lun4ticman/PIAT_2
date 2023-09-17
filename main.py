@@ -1,4 +1,5 @@
 from transformer import Transformer
+from pytorch_transformer import Pytorch_Transformer
 from dset import CorpusDataset
 import torch
 from generate import lstm_generate, generate_story
@@ -14,6 +15,7 @@ src_vocab_size = len(dset.corpus.dictionary)
 tgt_vocab_size = len(dset.corpus.dictionary)
 # tgt_vocab_size = 185904
 d_model = 128
+embedding_size = 128
 num_heads = 4
 num_layers = 5
 d_ff = 128
@@ -21,19 +23,20 @@ d_ff = 128
 dropout = 0.1
 #%%
 # train_loader, test_loader = get_loaders(dset, batch_size)
-transformer = Transformer(src_vocab_size, tgt_vocab_size, d_model, num_heads, num_layers, d_ff, max_seq_length, dropout)
+# transformer = Transformer(src_vocab_size, tgt_vocab_size, d_model, num_heads, num_layers, d_ff, max_seq_length, dropout)
+transformer = Pytorch_Transformer(src_vocab_size, d_model, embedding_size, num_layers, num_heads, d_ff, dropout)
 lstm = LSTM(src_vocab_size, d_model, d_model, num_layers, dropout)
 
 lstm_state_dict = torch.load('best_lstm.pt')
 lstm.load_state_dict(lstm_state_dict)
 
-transformer_state_dict = torch.load('best_2.pt')
+transformer_state_dict = torch.load('pytorch_transformer_recent.pt')
 transformer.load_state_dict(transformer_state_dict)
 
 lstm_story = lstm_generate(dset.corpus.dictionary, lstm, 'dawno dawno temu', 400)
 story = generate_story('dawno dawno temu', transformer.to('cuda'), dset.corpus.dictionary, 400)
 
-with open('stories.txt', 'a', encoding='UTF-8') as f:
+with open('stories_part_2.txt', 'a', encoding='UTF-8') as f:
     f.writelines('Transformer: \n')
     f.writelines(''.join(story))
     f.writelines('\n')
