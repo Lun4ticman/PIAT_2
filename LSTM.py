@@ -10,10 +10,7 @@ class LSTM(nn.Module):
         self.num_layers = num_layers
 
         # n_vocab = len(dataset.uniq_words)
-        self.embedding = nn.Embedding(
-            num_embeddings=n_vocab,
-            embedding_dim=self.embedding_dim,
-        )
+        self.embedding = nn.Embedding(num_embeddings=n_vocab, embedding_dim=self.embedding_dim)
         self.lstm = nn.LSTM(
             input_size=self.lstm_size,
             hidden_size=self.lstm_size,
@@ -23,8 +20,8 @@ class LSTM(nn.Module):
         self.fc = nn.Linear(self.lstm_size, n_vocab)
 
     def forward(self, x, prev_state):
-        embed = self.embedding(x)
-        output, state = self.lstm(embed, prev_state)
+        embedding = self.embedding(x)
+        output, state = self.lstm(embedding, prev_state)
         logits = self.fc(output)
         return logits, state
 

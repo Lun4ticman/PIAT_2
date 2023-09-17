@@ -8,10 +8,7 @@ class Pytorch_Transformer(nn.Module):
         self.num_layers = num_layers
         self.embedding_dim = embedding_dim
 
-        self.embedding = nn.Embedding(
-            num_embeddings=n_vocab,
-            embedding_dim=self.embedding_dim
-        )
+        self.embedding = nn.Embedding(num_embeddings=n_vocab, embedding_dim=self.embedding_dim)
         self.transformer = nn.Transformer(
             d_model=d_model,
             nhead=n_head,

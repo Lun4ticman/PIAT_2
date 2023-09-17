@@ -45,8 +45,6 @@ class CorpusDataset(torch.utils.data.Dataset):
 
 def get_loaders(dset, batch_size, train_size=0.9):
 
-    # test_size = round(1 - train_size, 2)
-
     train_set_size = int(len(dset) * train_size)
     test_set_size = len(dset) - train_set_size
 
