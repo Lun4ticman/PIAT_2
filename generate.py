@@ -78,4 +78,4 @@ def lstm_generate(dictionary: Dictionary, model: LSTM, text: str, next_words=400
         word_index = np.random.choice(len(last_word_logits), p=p)
         words.append(dictionary.idx2word[word_index])
 
-    return words
+    return ' '.join(words)

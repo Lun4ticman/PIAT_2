@@ -38,7 +38,7 @@ with open('stories.txt', 'a', encoding='UTF-8') as f:
     f.writelines(''.join(story))
     f.writelines('\n')
     f.writelines('LSTM: \n')
-    f.writelines(' '.join(lstm_story))
+    f.writelines(''.join(lstm_story))
 
 
 
